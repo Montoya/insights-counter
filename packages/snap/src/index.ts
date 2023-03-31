@@ -22,10 +22,10 @@ export const onTransaction: OnTransactionHandler = async ({ transaction }) => {
   let state = (await snap.request({
     method: 'snap_manageState',
     params: { operation: 'get' },
-  })) as { addresses: {} } || null; 
+  })) as { addresses: {}, lastTx: 0 } || null; 
 
   if (!state) { // if no data this is likely null 
-    state = { addresses: {} };
+    state = { addresses: {}, lastTx: 0 };
     // initialize state if empty and set default data
     await snap.request({
       method: 'snap_manageState',
@@ -35,16 +35,24 @@ export const onTransaction: OnTransactionHandler = async ({ transaction }) => {
 
   let interactions = state.addresses['address:'+transaction.to] || 0; 
 
-  interactions++; 
+  const rightNow = Date.now(); 
+  const lastTx = state.lastTx || 0; 
+  const distance = rightNow - lastTx; 
+
+  // tx insights can fire multiple times so an extra check is added to make sure the last tx was at least 4 seconds ago 
+  if(distance > 3999) { 
+    /* at least 4 seconds has passed */ 
+    interactions++; 
+    state.addresses['address:'+transaction.to] = interactions; 
+    state.lastTx = rightNow; 
+  }
 
   let returnText = 'You have interacted with this address '+interactions+' times.'; 
   if(interactions < 2) { 
     returnText = 'This is the **first time** you are interacting with this address.'; 
   }
 
-  state.addresses['address:'+transaction.to] = interactions; 
-
-  snap.request({
+  await snap.request({
     method: 'snap_manageState',
     params: { operation: 'update', newState: state },
   });

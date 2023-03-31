@@ -1,5 +1,5 @@
 {
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A snap that tracks how many times you have interacted with any address.",
   "proposedName": "Insights Counter",
   "repository": {
@@ -7,7 +7,7 @@
     "url": "https://github.com/Montoya/insights-counter.git"
   },
   "source": {
-    "shasum": "WylaU5HjCWZaI/XF14h2spr7DMhJjObyrYw3tUSKyPU=",
+    "shasum": "PPln8jelEPfobAW6eIEa+z08Uno09lC7wWg/PxK1sAo=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
