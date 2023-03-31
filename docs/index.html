@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Insights Counter snap</title>
+  <meta name="author" content="Christian Montoya">
+  <meta name="description" content="A MetaMask snap that tracks how many times you have interacted with an address.">
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="HandheldFriendly" content="true">
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, minimal-ui, target-densitydpi=device-dpi">
+  <style type="text/css">
+    body {
+      margin:0;
+      font-family: 'DM Sans', sans-serif;
+    }
+    h1 {
+      font-weight:400;
+      font-size:32px;
+      text-shadow:
+    }
+    p {
+      font-size:16px;
+    }
+    a.btn { 
+      color:#fff; 
+      display:inline-block; 
+      background-color:rgb(83, 13, 133); 
+      background: linear-gradient(0deg, rgb(83, 13, 133) 0%, rgb(119, 30, 183) 100%);
+      padding:12px; 
+      border-radius:6px; 
+      text-decoration:none;
+    }
+    #content { 
+      margin:48px auto;
+      width:600px; 
+    }
+  </style>
+</head>
+<body>
+
+  <!--Content starts-->
+  <div id="content">
+    <h1>Install the Insights Counter snap</h1>
+    <div id="installFlask" style="display:none">
+      <p>Snaps is pre-release software only available in MetaMask Flask, a canary distribution for developers with access to upcoming features.</p>
+      <a href="https://metamask.io/flask/" id="installFlaskButton" class="btn">
+        Install MetaMask Flask
+      </a>
+    </div>
+    <div id="installSnap">
+      <a href="#" id="installButton" class="btn">
+        Connect and install Insights Counter snap
+      </a>
+    </div>
+    <div id="snapInstalled" style="display:none">
+      <p>Insights Counter snap installed! You will now see it in the insights tab within MetaMask Flask.</p>
+    </div>
+  </div>
+  <!--Content ends-->
+
+  <script type="text/javascript">
+const isFlask = async () => {
+const provider = window.ethereum;
+
+try {
+  const clientVersion = await provider?.request({
+    method: 'web3_clientVersion',
+  });
+
+  const isFlaskDetected = (clientVersion)?.includes('flask');
+
+  return provider && isFlaskDetected;
+} catch {
+  return false;
+}
+}; 
+
+const getSnap = async () => {
+try {
+  const snaps = await window.ethereum.request({
+    method: 'wallet_getSnaps',
+  }); 
+
+  return Object.values(snaps).find(
+    (snap) =>
+      snap.id === 'npm:insights-counter'
+  );
+} catch (e) {
+  console.log('Failed to obtain installed snap', e);
+  return undefined;
+}
+};
+
+const connectSnap = async (event) => {
+event.preventDefault(); 
+const provider = window.ethereum; 
+
+try { 
+  await provider?.request({
+    method: 'wallet_requestSnaps', 
+    params: 
+      {
+        ['npm:insights-counter']: { }
+      },
+  }); 
+
+  const installedSnap = await getSnap();
+
+  if(installedSnap) { 
+    document.getElementById('installSnap').style.display = 'none'; 
+    document.getElementById('snapInstalled').style.display = 'block'; 
+  }
+} catch { 
+
+}
+return false; 
+}; 
+
+window.onload = async (event) => {
+const isFlaskDetected = await isFlask(); 
+if(!isFlaskDetected) {
+  document.getElementById('installFlask').style.display = 'block'; 
+  document.getElementById('installSnap').style.display = 'none'; 
+  return; 
+}
+
+document.getElementById('installSnapButton').addEventListener('click', connectSnap); 
+}; 
+    </script>
+  </body>
+</html>
