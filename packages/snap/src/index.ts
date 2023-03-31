@@ -12,8 +12,8 @@ import { hasProperty, isObject } from '@metamask/utils';
 export const onTransaction: OnTransactionHandler = async ({ transaction }) => {
   if (
     !isObject(transaction) ||
-    !hasProperty(transaction, 'data') ||
-    typeof transaction.data !== 'string'
+    !hasProperty(transaction, 'to') ||
+    typeof transaction.to !== 'string'
   ) {
     console.warn('Unknown transaction type.');
     return { content: text('Unknown transaction') };

@@ -1,7 +1,6 @@
 {
   "name": "insights-counter",
-  "version": "1.0.1",
-  "private": false,
+  "version": "1.0.2",
   "description": "A MetaMask snap that tracks how many times you have interacted with any address.",
   "repository": {
     "type": "git",
