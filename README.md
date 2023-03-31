@@ -171,4 +171,5 @@ Reconnect the snap to install the latest version, then try interacting with a co
 
 ## Caveats
 
-This snap only runs when the user views the transaction insights tab for this snap. So it is really a count of that. If the user interacts with an address without viewing the tab, then that is never counted. 
+1. This snap only runs when the user views the transaction insights tab for this snap. So it is really a count of that. If the user interacts with an address without viewing the tab, then that is never counted. 
+2. The transaction insights tab is loaded more than once when viewed, so the counter will fire multiple times, giving innacurate counts. To mitigate this, I have added a timestamp checker to only update the count if at least 4 seconds have passed since the last update. The source code in this repository has this feature. 
