@@ -1,8 +1,5 @@
-# TypeScript Example Snap
+# Insights Counter snap for MetaMask
 
-This Snap demonstrates how to develop a Snap with TypeScript.
+This snap tracks how many times you have interacted with each address. The information is displayed in the transaction insights interface. 
 
-## Notes
-
-- Babel is used for transpiling TypeScript to JavaScript, so when building with the CLI,
-  `transpilationMode` must be set to `localOnly` (default) or `localAndDeps`.
+To see how it was built, see the project README at [github.com/Montoya/insights-counter](https://github.com/Montoya/insights-counter). 

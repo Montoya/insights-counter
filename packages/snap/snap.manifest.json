@@ -1,18 +1,18 @@
 {
-  "version": "0.1.0",
-  "description": "An example Snap written in TypeScript.",
-  "proposedName": "TypeScript Example Snap",
+  "version": "1.0.1",
+  "description": "A snap that tracks how many times you have interacted with any address.",
+  "proposedName": "Insights Counter",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MetaMask/template-snap-monorepo.git"
+    "url": "https://github.com/Montoya/insights-counter.git"
   },
   "source": {
     "shasum": "17LtwpdghRtJHPhiiwoh9PcOn6Swmvd5Ls4JRIsbBU4=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
-        "iconPath": "images/icon.svg",
-        "packageName": "snap",
+        "iconPath": "images/counter.svg",
+        "packageName": "insights-counter",
         "registry": "https://registry.npmjs.org/"
       }
     }
