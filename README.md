@@ -50,3 +50,56 @@ You can then try going to a generic contract on mainnet and interact with it to 
 ```Typescript
   return { content: text('**You are interacting with:** ' + transaction.to) };
 ```
+
+Go back to the dapp, reconnect the snap to install the latest version, and go back to the contract to interact with it. This time you will see the address of the contract. 
+
+## 4. Use manageState to store a counter for each address you interact with: 
+
+```TypeScript
+  let state = (await snap.request({
+    method: 'snap_manageState',
+    params: { operation: 'get' },
+  })) as { addresses: {} } || null; 
+
+  if (!state) { // if no data this is likely null 
+    state = { addresses: {} };
+    // initialize state if empty and set default data
+    await snap.request({
+      method: 'snap_manageState',
+      params: { operation: 'update', newState: state },
+    });
+  }
+
+  let interactions = state.addresses['address:'+transaction.to] || 0; 
+
+  interactions++; 
+
+  let returnText = 'You have interacted with this address '+interactions+' times.'; 
+  if(interactions < 2) { 
+    returnText = 'This is the **first time** you are interacting with this address.'; 
+  }
+
+  state.addresses['address:'+transaction.to] = interactions; 
+
+  snap.request({
+    method: 'snap_manageState',
+    params: { operation: 'update', newState: state },
+  });
+```
+
+Add the panel type to the types you request from `snaps-ui`: 
+
+```TypeScript
+import { panel, text } from '@metamask/snaps-ui';
+```
+
+And modify the return value to display the number of times the user has interacted with this address: 
+
+```TypeScript
+  return { content: panel([
+    text('**You are interacting with:** ' + transaction.to),
+    text(returnText)
+  ]) };
+```
+
+Reconnect the snap to install the latest version, then try interacting with a contract multiple times to see the count go up. You can try interacting with different addresses and you will that the result matches how many times you interact with each one!

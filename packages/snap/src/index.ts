@@ -1,5 +1,5 @@
 import { OnTransactionHandler } from '@metamask/snaps-types';
-import { text } from '@metamask/snaps-ui';
+import { panel, text } from '@metamask/snaps-ui';
 import { hasProperty, isObject } from '@metamask/utils';
 
 /**
@@ -19,5 +19,38 @@ export const onTransaction: OnTransactionHandler = async ({ transaction }) => {
     return { content: text('Unknown transaction') };
   }
 
-  return { content: text('**You are interacting with:** ' + transaction.to) };
+  let state = (await snap.request({
+    method: 'snap_manageState',
+    params: { operation: 'get' },
+  })) as { addresses: {} } || null; 
+
+  if (!state) { // if no data this is likely null 
+    state = { addresses: {} };
+    // initialize state if empty and set default data
+    await snap.request({
+      method: 'snap_manageState',
+      params: { operation: 'update', newState: state },
+    });
+  }
+
+  let interactions = state.addresses['address:'+transaction.to] || 0; 
+
+  interactions++; 
+
+  let returnText = 'You have interacted with this address '+interactions+' times.'; 
+  if(interactions < 2) { 
+    returnText = 'This is the **first time** you are interacting with this address.'; 
+  }
+
+  state.addresses['address:'+transaction.to] = interactions; 
+
+  snap.request({
+    method: 'snap_manageState',
+    params: { operation: 'update', newState: state },
+  });
+
+  return { content: panel([
+    text('**You are interacting with:** ' + transaction.to),
+    text(returnText)
+  ]) };
 };
