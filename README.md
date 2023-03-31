@@ -1,8 +1,10 @@
 # Insights Snap
 
+## Tutorial
+
 Steps to code this yourself: 
 
-## 1. Go to the snap manifest `packages/snap/snap.manifest.json` and change the permissions to the following:  
+### 1. Go to the snap manifest `packages/snap/snap.manifest.json` and change the permissions to the following:  
 
 ```JSON
   "initialPermissions": {
@@ -11,7 +13,7 @@ Steps to code this yourself:
   },
 ```
 
-## 2. Go to the snap source code `packages/snap/src/index.ts` and replace it with this: 
+### 2. Go to the snap source code `packages/snap/src/index.ts` and replace it with this: 
 
 ```TypeScript
 import { OnTransactionHandler } from '@metamask/snaps-types';
@@ -45,7 +47,7 @@ Run `yarn && yarn start` to build the snap, launch the local server, and install
 
 You can then try going to a generic contract on mainnet and interact with it to see the transaction insights displayed: [Simple Storage](https://etherscan.io/address/0x48b4cb193b587c6f2dab1a9123a7bd5e7d490ced#writeContract). 
 
-## 3. Modify the snap source code return to get and display the address you are interacting with:
+### 3. Modify the snap source code return to get and display the address you are interacting with:
 
 ```Typescript
   return { content: text('**You are interacting with:** ' + transaction.to) };
@@ -53,7 +55,7 @@ You can then try going to a generic contract on mainnet and interact with it to 
 
 Go back to the dapp, reconnect the snap to install the latest version, and go back to the contract to interact with it. This time you will see the address of the contract. 
 
-## 4. Use manageState to store a counter for each address you interact with: 
+### 4. Use manageState to store a counter for each address you interact with: 
 
 ```TypeScript
   let state = (await snap.request({
@@ -166,3 +168,7 @@ export const onTransaction: OnTransactionHandler = async ({ transaction }) => {
 _Only ~50 lines of code!_
 
 Reconnect the snap to install the latest version, then try interacting with a contract multiple times to see the count go up. You can try interacting with different addresses and you will that the result matches how many times you interact with each one!
+
+## Caveats
+
+This snap only runs when the user views the transaction insights tab for this snap. So it is really a count of that. If the user interacts with an address without viewing the tab, then that is never counted. 
