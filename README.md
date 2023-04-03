@@ -153,7 +153,7 @@ export const onTransaction: OnTransactionHandler = async ({ transaction }) => {
 
   state.addresses['address:'+transaction.to] = interactions; 
 
-  snap.request({
+  await snap.request({
     method: 'snap_manageState',
     params: { operation: 'update', newState: state },
   });
