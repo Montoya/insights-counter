@@ -1,13 +1,13 @@
 {
-  "version": "1.0.3",
-  "description": "A snap that tracks how many times you have interacted with any address.",
+  "version": "1.0.4",
+  "description": "A MetaMask snap that tracks how many times you have interacted with any address.",
   "proposedName": "Insights Counter",
   "repository": {
     "type": "git",
     "url": "https://github.com/Montoya/insights-counter.git"
   },
   "source": {
-    "shasum": "PPln8jelEPfobAW6eIEa+z08Uno09lC7wWg/PxK1sAo=",
+    "shasum": "5KiC27/cwxO6l5z8FhLboK9sLn1VbYJMtQ4fPPCYkQk=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
